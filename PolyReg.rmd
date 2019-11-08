@@ -34,4 +34,56 @@ summary.lm(fit3)
 anova(fit1,fit3)
 anova(fit2,fit3)
 ```
+## Plot models
 
+```{r}
+temp_var <- predict(fit1,interval="confidence") 
+new_df <- cbind(mydf, temp_var) %>% rename(lwrc=lwr,uprc=upr,fitc=fit)
+temp_var2 <- predict(fit1,interval="prediction") 
+new_df2 <- cbind(new_df, temp_var2)  
+ggplot(new_df2, aes(myx, myy))+
+  geom_point()+
+geom_line(aes(y=lwrc), color = "blue", linetype = "dashed")+
+    geom_line(aes(y=uprc), color = "blue", linetype = "dashed")+
+ geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
+    geom_line(aes(y=upr), color = "red", linetype = "dashed")+ 
+    geom_smooth(method=lm, se=TRUE)
+
+
+```
+
+## Plot fit2
+
+```{r}
+temp_var <- predict(fit2,interval="confidence") 
+new_df <- cbind(mydf, temp_var) %>% rename(lwrc=lwr,uprc=upr,fitc=fit)
+temp_var2 <- predict(fit2,interval="prediction") 
+new_df2 <- cbind(new_df, temp_var2)  
+ggplot(new_df2, aes(myx, myy))+
+  geom_point()+
+geom_line(aes(y=lwrc), color = "blue", linetype = "dashed")+
+    geom_line(aes(y=uprc), color = "blue", linetype = "dashed")+
+ geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
+    geom_line(aes(y=upr), color = "red", linetype = "dashed")+ 
+    geom_line(aes(y=fit))
+
+
+```
+
+## Plot fit3
+
+```{r}
+temp_var <- predict(fit3,interval="confidence") 
+new_df <- cbind(mydf, temp_var) %>% rename(lwrc=lwr,uprc=upr,fitc=fit)
+temp_var2 <- predict(fit3,interval="prediction") 
+new_df2 <- cbind(new_df, temp_var2)  
+ggplot(new_df2, aes(myx, myy))+
+  geom_point()+
+geom_line(aes(y=lwrc), color = "blue", linetype = "dashed")+
+    geom_line(aes(y=uprc), color = "blue", linetype = "dashed")+
+ geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
+    geom_line(aes(y=upr), color = "red", linetype = "dashed")+ 
+    geom_line(aes(y=fit))
+
+
+```
