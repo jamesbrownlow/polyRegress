@@ -1,0 +1,103 @@
+---
+title: "DrKregress"
+author: "Dr. J"
+date: "11/9/2019"
+output: html_document
+---
+
+
+```{r include=FALSE}
+require(tidyverse)
+require(tigerstats)
+# make data
+x <- seq(from = -25, to= 25, by = .1)
+noise <- rnorm(n=501,mean=0,sd=85)
+y <- 2*(x-20)*(x+15) + noise
+```
+```{r}
+newdat <- data.frame(myx = x, myy= y)
+mydf <- newdat %>% sample_frac(.2)
+plot(myy~myx,data=mydf)
+```
+
+```{r}
+fit1 <- lm(myy~myx,data=mydf)
+summary.lm(fit1)
+fit2 <- lm(myy~I(myx^2),data=mydf)
+summary.lm(fit2)
+fit3 <- lm(myy~myx + I(myx^2),data=mydf)
+summary.lm(fit3)
+```
+## Test nested models
+
+```{r}
+anova(fit1,fit3)
+anova(fit2,fit3)
+```
+## Plot models
+
+```{r}
+temp_var <- predict(fit1,interval="confidence") 
+new_df <- cbind(mydf, temp_var) %>% rename(lwrc=lwr,uprc=upr,fitc=fit)
+temp_var2 <- predict(fit1,interval="prediction") 
+new_df2 <- cbind(new_df, temp_var2)  
+ggplot(new_df2, aes(myx, myy))+
+  geom_point()+
+geom_line(aes(y=lwrc), color = "blue", linetype = "dashed")+
+    geom_line(aes(y=uprc), color = "blue", linetype = "dashed")+
+ geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
+    geom_line(aes(y=upr), color = "red", linetype = "dashed")+ 
+    geom_smooth(method=lm, se=TRUE) +
+ theme(plot.title = element_text(hjust = 0.5)) +
+  ggtitle("linear fit y = mx + b")
+```
+
+## Plot fit2
+
+```{r}
+temp_var <- predict(fit2,interval="confidence") 
+new_df <- cbind(mydf, temp_var) %>% rename(lwrc=lwr,uprc=upr,fitc=fit)
+temp_var2 <- predict(fit2,interval="prediction") 
+new_df2 <- cbind(new_df, temp_var2)  
+ggplot(new_df2, aes(myx, myy))+
+  geom_point()+
+geom_line(aes(y=lwrc), color = "blue", linetype = "dashed")+
+    geom_line(aes(y=uprc), color = "blue", linetype = "dashed")+
+ geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
+    geom_line(aes(y=upr), color = "red", linetype = "dashed")+ 
+    geom_line(aes(y=fit))+
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ggtitle("quadratic fit y = mx^2 + b")
+```
+
+## Plot fit3
+
+
+
+
+```{r}
+
+mainTitle = expression(paste('y=',ax^2+bx+c))
+temp_var <- predict(fit3,interval="confidence") 
+new_df <- cbind(mydf, temp_var) %>% rename(lwrc=lwr,uprc=upr,fitc=fit)
+temp_var2 <- predict(fit3,interval="prediction") 
+new_df2 <- cbind(new_df, temp_var2)  
+ggplot(new_df2, aes(myx, myy))+
+  geom_point()+
+geom_line(aes(y=lwrc), color = "blue", linetype = "dashed")+
+    geom_line(aes(y=uprc), color = "blue", linetype = "dashed")+
+ geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
+    geom_line(aes(y=upr), color = "red", linetype = "dashed")+ 
+    geom_line(aes(y=fit)) +
+  theme(plot.title = element_text(hjust = 0.5))   +
+ggtitle(mainTitle)
+```
+
+
+
+```{r}
+mainTitle = expression(paste('y=',ax^2+bx+c))
+plot(mydf$myx, mydf$myy, main=mainTitle)
+```
+
+
