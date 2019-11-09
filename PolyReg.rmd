@@ -47,7 +47,9 @@ geom_line(aes(y=lwrc), color = "blue", linetype = "dashed")+
     geom_line(aes(y=uprc), color = "blue", linetype = "dashed")+
  geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
     geom_line(aes(y=upr), color = "red", linetype = "dashed")+ 
-    geom_smooth(method=lm, se=TRUE)
+    geom_smooth(method=lm, se=TRUE) +
+ theme(plot.title = element_text(hjust = 0.5)) +
+  ggtitle("linear fit y = mx + b")
 
 
 ```
@@ -65,7 +67,9 @@ geom_line(aes(y=lwrc), color = "blue", linetype = "dashed")+
     geom_line(aes(y=uprc), color = "blue", linetype = "dashed")+
  geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
     geom_line(aes(y=upr), color = "red", linetype = "dashed")+ 
-    geom_line(aes(y=fit))
+    geom_line(aes(y=fit))+
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ggtitle("quadratic fit y = mx^2 + b")
 
 
 ```
@@ -83,7 +87,8 @@ geom_line(aes(y=lwrc), color = "blue", linetype = "dashed")+
     geom_line(aes(y=uprc), color = "blue", linetype = "dashed")+
  geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
     geom_line(aes(y=upr), color = "red", linetype = "dashed")+ 
-    geom_line(aes(y=fit))
-
+    geom_line(aes(y=fit)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+ggtitle(" full quadratic fit $ y = ax^2^ + bx + c$")
 
 ```
